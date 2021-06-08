@@ -14,11 +14,11 @@ class DataAcquisition:
         BoardShim.enable_dev_board_logger()
         parser = argparse.ArgumentParser()
         parser.add_argument('--serial-port', type=str,
-                            help='serial port', default='/dev/cu.usbmodem1')
+                            help='serial port', default=serial_port)
         parser.add_argument('--streamer-params', type=str,
                             help='other info', required=False, default='')
         parser.add_argument('--board-id', type=int,
-                            help='board id, check docs to get a list of supported boards', default=1)
+                            help='board id, check docs to get a list of supported boards', default=board_id)
         self.args = parser.parse_args()
         #self.window_size = window_size
 
@@ -26,16 +26,25 @@ class DataAcquisition:
         params.serial_port = self.args.serial_port
         self.board = BoardShim(self.args.board_id, params)
         self.board.prepare_session()
+        self.board.config_board('n')
         self.channels = BoardShim.get_exg_channels(board_id)
         self.samplingRate = BoardShim.get_sampling_rate(board_id)
-        print(self.samplingRate)
+        self.markerChannel = BoardShim.get_marker_channel(board_id)
+        info = BoardShim.get_accel_channels(board_id)
+        print("info: ", info)
 
     def getAllData(self):
         # get all data and remove it from internal buffer
         return self.board.get_board_data()
 
+    def getBoard(self):
+        return self.board
+
     def getChannels(self):
         return self.channels
+
+    def getMarkerChannel(self):
+        return self.markerChannel
 
     def getRecentData(self, points):
         # do not remove data from buffer

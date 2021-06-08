@@ -1,5 +1,6 @@
 import collections
 import numpy as np
+from datetime import datetime
 
 
 # HTIL
@@ -13,7 +14,7 @@ import atexit
 from brainflow.data_filter import DataFilter, FilterTypes, AggOperations
 
 
-class App:
+class PhysioGo:
     def __init__(self, title, sensor_port, sensor_name):
         self.boards = {"ganglion": 1}
         self.update_speed_ms = 100  # config
@@ -37,9 +38,11 @@ class App:
         self.latestData = []
         self.refresh = None
         self.recoredData = []
+        self.date = datetime.now().strftime("%H:%M:%S")
         self.channelStreams = [collections.deque(
             maxlen=self.data_size) for channel in self.channels]  # set up channel data streams
         print(self.channelStreams)
+        self.board = self.sensor.getBoard()
 
     ''' Getters '''
 
@@ -106,7 +109,9 @@ class App:
     def update(self):
         channels = self.sensor.getChannels()
         # data = self.sensor.getRecentData(self.data_size)  # config
+        # self.board.insert_marker(1)
         data = self.sensor.getAllData()
+        DataFilter.write_file(data, f'data/_{self.date}.csv', 'a')
 
         # Update all views
 
@@ -132,8 +137,7 @@ def refresh(app):
 
 def main():
     # run ls /dev/cu.* on unix to find port. On windows use...?
-    app = App("My App", '/dev/cu.usbmodem1', "ganglion")  # create app
-    print(app.streamBuffer)
+    app = PhysioGo("My App", '/dev/cu.usbmodem1', "ganglion")  # create app
     # app.setRefresh(refresh)
     plots = app.addLinePlot("line_series1", yMin=-
                             app.yRange, yMax=app.yRange)
