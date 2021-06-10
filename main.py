@@ -168,57 +168,13 @@ def refresh(app):
     print("refresh", app.getLatestData())
 
 
-class PhysioLearn:
-    def __init__(self, num_channels, channel_type, eventFile=None, eventMapping=None):
-        self.currentFileDf = []
-        self.channels = num_channels
-        self.channelTypes = [channel_type] * num_channels
-        self.channelNames = [str(n) for n in range(num_channels)]
-        self.sfreq = 200
-        self.markerChannel = 14
-        self.eventMapping = eventMapping
-        self.events = mne.read_events(eventFile)
-        self.eventsNew = None
-        self.info = mne.create_info(
-            ch_names=self.channelNames, sfreq=self.sfreq, ch_types=self.channelTypes)
-
-    def createEvents(self):
-        i = 0
-        array = []
-        for sample in self.currentFileDf[self.markerChannel]:
-            i = i + 1
-            if sample != 0.0:
-                array.append([i, 0, int(sample)])
-        self.eventsNew = np.array(array, dtype=int)
-
-    def readFile(self, location):
-        currentFile = DataFilter.read_file(location)
-        self.currentFileDf = pd.DataFrame(np.transpose(currentFile))
-        res = currentFile[1:5] / 1000000
-        self.createEvents()
-        raw = mne.io.RawArray(res, self.info)
-        raw.plot(events=self.eventsNew, start=30, duration=30.0,
-                 event_id=self.eventMapping)
-        plt.savefig('raw.png')
-
-    def start(self):
-        self.readFile("data/trial1.csv")
-
-
 def main():
     # run ls /dev/cu.* on unix to find port. On windows use...?
-    '''
+
     app = PhysioGo("EMG_Test", '/dev/cu.usbmodem1', "ganglion")  # create app
     app.addBasicText()
-    plots = app.addLinePlot("line_series1", yMin=-
-                            app.yRange, yMax=app.yRange)
+    plots = app.addLinePlot("line_series1", yMin=-app.yRange, yMax=app.yRange)
     app.start()
-    '''
-
-    # Learn data collected
-    event_mapping = {'Rest': 100, 'Lift': 99, 'Squeeze': 98}
-    learn = PhysioLearn(4, "emg", "data/events.txt", event_mapping)
-    learn.start()
 
 
 if __name__ == "__main__":
