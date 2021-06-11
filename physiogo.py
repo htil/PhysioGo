@@ -48,7 +48,7 @@ class PhysioGo:
         self.myText = None
         self.writeData = write_data
         self.recoredData = []
-        self.date = datetime.now().strftime("%H:%M:%S")
+        self.date = datetime.now().strftime("%H_%M_%S")
         self.channelStreams = [collections.deque(
             maxlen=self.data_size) for channel in self.channels]  # set up channel data streams
         self.board = self.sensor.getBoard()
