@@ -8,6 +8,8 @@ import mne
 import matplotlib.pyplot as plt
 import joblib
 
+#Audio
+from playsound import playsound
 
 # HTIL
 from acquisition import DataAcquisition
@@ -153,7 +155,7 @@ class PhysioGo:
     def loadModel(self, fileName):
         self.model = joblib.load(fileName)
 
-    def updateInstructions(self):
+    def updateInstructions(self): #Here is where you want to add audio.
         # [100, 99, 98] markers
         classes = ['Rest', 'Lift', 'Squeeze']
         index = randrange(3)
@@ -161,6 +163,13 @@ class PhysioGo:
         mark = int(100 - index)
         self.board.insert_marker(mark)
         self.myText.setText(instruction)
+        #Stops for a quick sec to pull the file and then and plays (Has to fetch it)
+        if(index == 0):
+            playsound('audio/Rest.mp3')
+        elif(index == 1): 
+            playsound('audio/Lift.mp3')
+        else:
+            playsound('audio/Squeeze.mp3') 
 
     def update(self):
         channels = self.sensor.getChannels()
