@@ -11,6 +11,10 @@ import joblib
 #Audio
 from playsound import playsound
 
+#Button
+from tkinter import *       
+from tkinter.ttk import *
+
 # HTIL
 from acquisition import DataAcquisition
 
@@ -36,6 +40,7 @@ class PhysioGo:
         self.sensor.startStreaming()
         self.channels = self.sensor.getChannels()
         self.sfreq = self.sensor.getSamplingRate()
+        self.readyButton()
         self.app = QtGui.QApplication([])
         self.title = title
         self.main_layout = pg.GraphicsLayoutWidget(
@@ -107,11 +112,25 @@ class PhysioGo:
         return plots
 
     def addBasicText(self):
-        myViewBox = self.main_layout.addViewBox(border='#A54E4E')
+        myViewBox = self.main_layout.addViewBox(border='#ffffff')
         myViewBox.autoRange()
+        #Working on some buttons#
+        anotherView = self.main_layout.addViewBox(border='#004eaa')
+        anotherView.autoRange()
+        #Working on some buttons#
         self.myText = pg.TextItem("")
         self.myText.setPos(.5, .5)
         myViewBox.addItem(self.myText)
+
+    def readyButton(self):
+        #A ready button
+        root = Tk()
+        root.title("Ready?")
+        root.geometry('800x600')    
+        btn = Button(root, text = 'Click to begin',
+                command = root.destroy)
+        btn.pack(side = 'top')    
+        root.mainloop()
 
     def close(self):
         for num, stream in enumerate(self.channelStreams):
