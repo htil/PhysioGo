@@ -37,10 +37,10 @@ class PhysioGo:
         self.height = 600  # config
         self.sensor = DataAcquisition(
             sensor_port,  self.boards[sensor_name])
+        self.readyButton()
         self.sensor.startStreaming()
         self.channels = self.sensor.getChannels()
         self.sfreq = self.sensor.getSamplingRate()
-        self.readyButton()
         self.app = QtGui.QApplication([])
         self.title = title
         self.main_layout = pg.GraphicsLayoutWidget(
@@ -126,7 +126,9 @@ class PhysioGo:
         #A ready button
         root = Tk()
         root.title("Ready?")
-        root.geometry('800x600')    
+        root.geometry('800x600') 
+        label= Label(root, text="When you are ready press the button to begin", font= ('Arial 20 bold'))
+        label.pack()   
         btn = Button(root, text = 'Click to begin',
                 command = root.destroy)
         btn.pack(side = 'top')    
