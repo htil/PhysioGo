@@ -8,6 +8,12 @@ import mne
 import matplotlib.pyplot as plt
 import joblib
 
+#Audio
+from playsound import playsound
+
+#Button
+from tkinter import *       
+from tkinter.ttk import *
 
 # HTIL
 from acquisition import DataAcquisition
@@ -31,6 +37,7 @@ class PhysioGo:
         self.height = 600  # config
         self.sensor = DataAcquisition(
             sensor_port,  self.boards[sensor_name])
+        self.readyButton()
         self.sensor.startStreaming()
         self.channels = self.sensor.getChannels()
         self.sfreq = self.sensor.getSamplingRate()
@@ -105,11 +112,23 @@ class PhysioGo:
         return plots
 
     def addBasicText(self):
-        myViewBox = self.main_layout.addViewBox(border='#A54E4E')
+        myViewBox = self.main_layout.addViewBox(border='#ffffff')
         myViewBox.autoRange()
         self.myText = pg.TextItem("")
         self.myText.setPos(.5, .5)
         myViewBox.addItem(self.myText)
+
+    def readyButton(self):
+        #A ready button
+        root = Tk()
+        root.title("Ready?")
+        root.geometry('800x600') 
+        label= Label(root, text="When you are ready press the button to begin", font= ('Arial 20 bold'))
+        label.pack()   
+        btn = Button(root, text = 'Click to begin',
+                command = root.destroy)
+        btn.pack(side = 'top')    
+        root.mainloop()
 
     def close(self):
         for num, stream in enumerate(self.channelStreams):
@@ -153,7 +172,7 @@ class PhysioGo:
     def loadModel(self, fileName):
         self.model = joblib.load(fileName)
 
-    def updateInstructions(self):
+    def updateInstructions(self): #Here is where you want to add audio.
         # [100, 99, 98] markers
         classes = ['Rest', 'Lift', 'Squeeze']
         index = randrange(3)
@@ -161,6 +180,14 @@ class PhysioGo:
         mark = int(100 - index)
         self.board.insert_marker(mark)
         self.myText.setText(instruction)
+        #Stops for a quick sec to pull the file and then and plays
+        if(index == 0):
+            playsound('audio/Rest.mp3')
+        elif(index == 1): 
+            playsound('audio/Lift.mp3')
+        else:
+            playsound('audio/Squeeze.mp3')
+
 
     def update(self):
         channels = self.sensor.getChannels()

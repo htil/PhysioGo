@@ -23,7 +23,7 @@ from physiogo import PhysioGo
 def main():
     # run ls /dev/cu.* on unix to find port. On windows use...?
 
-    app = PhysioGo("Bryan_EMG_Test", '/dev/cu.usbmodem1',
+    app = PhysioGo("Brisaac_EMG_Test", 'COM3',
                    "ganglion", write_data=True)  # create app
     app.addBasicText()
     plots = app.addLinePlot("line_series1", yMin=-app.yRange, yMax=app.yRange)
