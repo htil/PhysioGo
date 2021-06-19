@@ -37,10 +37,10 @@ class PhysioGo:
         self.height = 600  # config
         self.sensor = DataAcquisition(
             sensor_port,  self.boards[sensor_name])
+        self.readyButton()
         self.sensor.startStreaming()
         self.channels = self.sensor.getChannels()
         self.sfreq = self.sensor.getSamplingRate()
-        self.readyButton()
         self.app = QtGui.QApplication([])
         self.title = title
         self.main_layout = pg.GraphicsLayoutWidget(
@@ -114,10 +114,6 @@ class PhysioGo:
     def addBasicText(self):
         myViewBox = self.main_layout.addViewBox(border='#ffffff')
         myViewBox.autoRange()
-        #Working on some buttons#
-        anotherView = self.main_layout.addViewBox(border='#004eaa')
-        anotherView.autoRange()
-        #Working on some buttons#
         self.myText = pg.TextItem("")
         self.myText.setPos(.5, .5)
         myViewBox.addItem(self.myText)
@@ -126,7 +122,9 @@ class PhysioGo:
         #A ready button
         root = Tk()
         root.title("Ready?")
-        root.geometry('800x600')    
+        root.geometry('800x600') 
+        label= Label(root, text="When you are ready press the button to begin", font= ('Arial 20 bold'))
+        label.pack()   
         btn = Button(root, text = 'Click to begin',
                 command = root.destroy)
         btn.pack(side = 'top')    
@@ -182,13 +180,14 @@ class PhysioGo:
         mark = int(100 - index)
         self.board.insert_marker(mark)
         self.myText.setText(instruction)
-        #Stops for a quick sec to pull the file and then and plays (Has to fetch it)
+        #Audio section
         if(index == 0):
             playsound('audio/Rest.mp3')
         elif(index == 1): 
             playsound('audio/Lift.mp3')
         else:
-            playsound('audio/Squeeze.mp3') 
+            playsound('audio/Squeeze.mp3')
+
 
     def update(self):
         channels = self.sensor.getChannels()
