@@ -114,10 +114,6 @@ class PhysioGo:
     def addBasicText(self):
         myViewBox = self.main_layout.addViewBox(border='#ffffff')
         myViewBox.autoRange()
-        #Working on some buttons#
-        anotherView = self.main_layout.addViewBox(border='#004eaa')
-        anotherView.autoRange()
-        #Working on some buttons#
         self.myText = pg.TextItem("")
         self.myText.setPos(.5, .5)
         myViewBox.addItem(self.myText)
@@ -184,13 +180,14 @@ class PhysioGo:
         mark = int(100 - index)
         self.board.insert_marker(mark)
         self.myText.setText(instruction)
-        #Stops for a quick sec to pull the file and then and plays (Has to fetch it)
+        #Stops for a quick sec to pull the file and then and plays
         if(index == 0):
             playsound('audio/Rest.mp3')
         elif(index == 1): 
             playsound('audio/Lift.mp3')
         else:
-            playsound('audio/Squeeze.mp3') 
+            playsound('audio/Squeeze.mp3')
+
 
     def update(self):
         channels = self.sensor.getChannels()
