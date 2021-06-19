@@ -180,7 +180,7 @@ class PhysioGo:
         mark = int(100 - index)
         self.board.insert_marker(mark)
         self.myText.setText(instruction)
-        #Stops for a quick sec to pull the file and then and plays
+        #Audio section
         if(index == 0):
             playsound('audio/Rest.mp3')
         elif(index == 1): 
