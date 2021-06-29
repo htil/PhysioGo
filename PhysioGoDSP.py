@@ -15,32 +15,33 @@ def rectify(signal):
 
 # windowSize = seconds
 # this sliding window implementation is slow. Fix with numpy vectorization.
-def extractWindows(signal, windowSize, sFreq, overlap):
+def extractWindows(signal, windowSize, overlap):
     windowStart = 0
     numOfSamples = len(signal)
     windows = []
-    overlap = 1 - overlap
 
     #print(f'numOfSamples {numOfSamples}')
-    while windowStart + int(windowSize * sFreq) < numOfSamples:
-        stop = int(windowStart + (windowSize * sFreq))
+    while windowStart + int(windowSize) < numOfSamples:
+        stop = int(windowStart + windowSize)
         window = signal[windowStart:stop]
         windows.append(window)
-        windowStart = int(windowStart + (windowSize * overlap * sFreq))
+        windowStart = int(windowStart + windowSize) - overlap
         #print(f'samples: {numOfSamples}, windowStart {windowStart}')
     return np.vstack(windows)
 
 
-def getMovingAverage(signal, times, windowSize, sFreq, overlap):
-    windows = extractWindows(signal, windowSize, sFreq, overlap)
+def getMovingAverage(signal, times, windowSize):
+    overlap = windowSize - 1
+    windows = extractWindows(signal, windowSize, overlap)
     movingAvg = windows.mean(axis=1)
     sampleGap = len(times) - len(movingAvg)
     paddedMovingAvg = np.pad(movingAvg, (sampleGap, 0), 'edge')
     return paddedMovingAvg
 
 
-def getRMSEnvelope(signal, times, windowSize, sFreq, overlap):
-    windows = extractWindows(signal, windowSize, sFreq, overlap)
+def getRMSEnvelope(signal, times, windowSize):
+    overlap = windowSize - 1
+    windows = extractWindows(signal, windowSize, overlap)
     rmsEnvelope = [getRMS(signalWindow) for signalWindow in windows]
     sampleGap = len(times) - len(rmsEnvelope)
     paddedRMS = np.pad(rmsEnvelope, (sampleGap, 0), 'edge')

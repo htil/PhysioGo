@@ -29,7 +29,7 @@ class Study:
         #self.currentFileDf = pd.DataFrame(np.transpose(self.currentFile))
         # only accounts for 1 channel currently
         res = self.currentFile[firstColumn:lastColumn] / self.mneFactor
-        self.raw = mne.io.RawArrasy(res, self.info)
+        self.raw = mne.io.RawArray(res, self.info)
         print(f'Read {location}')
 
     def updateRaw(self, data):

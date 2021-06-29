@@ -131,9 +131,12 @@ class PhysioGo:
         timer.start(self.update_speed_ms)
 
         # Instruction Timer
+        # Maybe move this out also?
         timer2 = QtCore.QTimer()
         timer2.timeout.connect(self.updateInstructions)
         timer2.start(5000)
+
+        ####
 
         QtGui.QApplication.instance().exec_()
         atexit.register(self.close)
@@ -156,7 +159,7 @@ class PhysioGo:
     def updateInstructions(self):
         # [100, 99, 98] markers
         classes = ['Rest', 'Lift', 'Squeeze']
-        index = randrange(3)
+        index = randrange(len(classes))
         instruction = classes[index]
         mark = int(100 - index)
         self.board.insert_marker(mark)
