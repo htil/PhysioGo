@@ -45,6 +45,7 @@ class PhysioGo:
         self.latestData = []
         self.model = None
         self.refresh = None
+        self.socket = None
         self.myText = None
         self.writeData = write_data
         self.recoredData = []
@@ -52,6 +53,7 @@ class PhysioGo:
         self.channelStreams = [collections.deque(
             maxlen=self.data_size) for channel in self.channels]  # set up channel data streams
         self.board = self.sensor.getBoard()
+        self.visibility = True
 
     ''' Getters '''
 
@@ -85,6 +87,12 @@ class PhysioGo:
 
     def setRefresh(self, refreshFunction):
         self.refresh = refreshFunction
+
+    def setSocketServer(self, socket):
+        self.socket = socket
+
+    def setGUIVisibility(self, visibility):
+        self.visibility = visibility
 
     ''' '''
 
@@ -137,7 +145,7 @@ class PhysioGo:
         timer2.start(5000)
 
         ####
-
+        
         QtGui.QApplication.instance().exec_()
         atexit.register(self.close)
 
