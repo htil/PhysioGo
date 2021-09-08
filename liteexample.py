@@ -2,6 +2,7 @@ from physiogolite import PhysioGo
 from visualizations import linePlots
 import numpy as np
 from PhysioGoDSP import getMovingAverage, rectify
+import time
 
 
 class App:
@@ -12,12 +13,14 @@ class App:
         self.linePlots = linePlots(self.GUI, self.context.getChannelCount())
         self.context.addLinePlots(self.linePlots)
         self.context.setFilterPipeline(self.filter)
+        self.startTime = time.time()
         self.context.start(self.update)
 
     def filter(self, data):
         return getMovingAverage(data, data, int(len(data) * 0.05))
 
     def update(self, data):
+        print(self.startTime)
         pass
 
 

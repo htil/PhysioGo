@@ -1,0 +1,23 @@
+{
+  "folders": [
+    {
+      "path": "."
+    },
+    {
+      "path": "../double_dipper"
+    },
+    {
+      "path": "../nih-study"
+    },
+    {
+      "path": "../brain_butler_2021"
+    },
+    {
+      "path": "../simple-socket-io-example"
+    }
+  ],
+  "settings": {
+    "jupyter.jupyterServerType": "local",
+    "liveServer.settings.multiRootWorkspaceName": "simple-socket-io-example"
+  }
+}

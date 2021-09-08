@@ -6,7 +6,7 @@ import csv
 
 
 class Study:
-    def __init__(self, num_channels, channel_type, fs, eventMapping=None, eventFile=None):
+    def __init__(self, num_channels, channel_type, fs, eventFile=None):
         self.raw = None
         self.currentFile = None
         self.currentFileDf = []
