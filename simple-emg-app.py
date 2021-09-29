@@ -12,7 +12,9 @@ def refresh(app):
     app.socket.send('data', bands[0].tolist())
     if bands != None:
         label = app.model.predict([bands[0]])
+        print("SENDING OVER: ")
         print(label)
+        app.socket.send('prediction', label[0]);
 
 
 def main():

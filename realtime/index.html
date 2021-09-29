@@ -12,7 +12,7 @@
         </center>
         <script src="ioclient.js"></script>
         <script type="text/javascript">
-
+            const pred = "";
             const client = new IOClient('http://localhost:5000')
             client.on('connect', () => {
                 console.log('Connected to Server')
@@ -91,6 +91,10 @@
                 }
                 Plotly.relayout('chart', view)
                 Plotly.extendTraces('chart', next, [0, 1, 2, 3, 4])
+            })
+
+            client.on('prediction', (args) => {
+                console.log("PRED: ", args);
             })
             
             /*setInterval(() => {

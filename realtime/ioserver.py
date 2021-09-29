@@ -22,6 +22,7 @@ class IOServer():
         self.sio.on(msg)(handler)
 
     def send(self, msg, data):
+        print("EMIT")
         print(data)
         self.sio.emit(msg, {'data': data })
 
