@@ -8,9 +8,7 @@ from brainflow.data_filter import DataFilter, FilterTypes, AggOperations
 def main():
     # or BoardIds.NOTION_2_BOARD.value or BoardIds.NOTION_1_BOARD.value
     # print(BoardIds.NOTION_1_BOARD)
-    for i in BoardIds:
-        print(i)
-    '''
+
     board_id = BoardIds.CROWN_BOARD
     params = BrainFlowInputParams()
     params.board_id = board_id
@@ -23,7 +21,6 @@ def main():
     board.release_session()
 
     print(data)
-    '''
 
 
 if __name__ == "__main__":
